@@ -1,12 +1,15 @@
 package br.edu.ifms.salao.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Usuarios implements Serializable{
@@ -20,6 +23,8 @@ public class Usuarios implements Serializable{
 	private String nome;
 	private String email;
 	private String senha;
+	@OneToMany(mappedBy = "usuario")
+	private List<Salao> saloes = new ArrayList<Salao>();
 	
 	public Usuarios() {
 		// TODO Auto-generated constructor stub
@@ -63,6 +68,16 @@ public class Usuarios implements Serializable{
 
 	public void setSenha(String senha) {
 		this.senha = senha;
+	}
+	
+	
+
+	public List<Salao> getSaloes() {
+		return saloes;
+	}
+
+	public void setSaloes(List<Salao> saloes) {
+		this.saloes = saloes;
 	}
 
 	@Override
