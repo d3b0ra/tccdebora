@@ -1,6 +1,8 @@
 package br.edu.ifms.salao.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Entity;
@@ -9,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -29,6 +32,10 @@ public class Salao implements Serializable{
 	@ManyToOne
 	@JoinColumn(name="usuario_id")
 	private Usuarios usuario;
+	@OneToMany(mappedBy = "salao")
+	private List<Cliente> clientes = new ArrayList<Cliente>();
+	@OneToMany(mappedBy = "salao")
+	private List<Promocao> promocoes = new ArrayList<Promocao>();
 	
 	public Salao() {
 		// TODO Auto-generated constructor stub
@@ -90,6 +97,26 @@ public class Salao implements Serializable{
 
 	public void setUsuario(Usuarios usuario) {
 		this.usuario = usuario;
+	}
+	
+	
+
+	public List<Cliente> getClientes() {
+		return clientes;
+	}
+
+	public void setClientes(List<Cliente> clientes) {
+		this.clientes = clientes;
+	}
+	
+	
+
+	public List<Promocao> getPromocoes() {
+		return promocoes;
+	}
+
+	public void setPromocoes(List<Promocao> promocoes) {
+		this.promocoes = promocoes;
 	}
 
 	@Override
