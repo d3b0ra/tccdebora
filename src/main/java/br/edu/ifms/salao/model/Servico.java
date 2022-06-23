@@ -29,6 +29,7 @@ public class Servico implements Serializable{
 	private String nome;
 	private String descricao;
 	private double valor;
+	private int duracao;
 	
 	@OneToMany(mappedBy = "cliente")
 	private List<Agenda> agendas = new ArrayList<Agenda>();
@@ -46,13 +47,22 @@ public class Servico implements Serializable{
 
 
 
-	public Servico(Integer id, String nome, String descricao, double valor) {
+
+
+
+
+	public Servico(Integer id, String nome, String descricao, double valor, int duracao) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.descricao = descricao;
 		this.valor = valor;
+		this.duracao = duracao;
 	}
+
+
+
+
 
 
 
@@ -109,6 +119,27 @@ public class Servico implements Serializable{
 	public void setAgendas(List<Agenda> agendas) {
 		this.agendas = agendas;
 	}
+
+	
+
+
+	public int getDuracao() {
+		return duracao;
+	}
+
+
+
+
+
+
+
+	public void setDuracao(int duracao) {
+		this.duracao = duracao;
+	}
+
+
+
+
 
 
 
