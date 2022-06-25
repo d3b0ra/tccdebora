@@ -6,12 +6,14 @@ import java.util.Arrays;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.edu.ifms.salao.model.Agenda;
 import br.edu.ifms.salao.model.Cliente;
 import br.edu.ifms.salao.model.Profissional;
 import br.edu.ifms.salao.model.Promocao;
 import br.edu.ifms.salao.model.Salao;
 import br.edu.ifms.salao.model.Servico;
 import br.edu.ifms.salao.model.Usuarios;
+import br.edu.ifms.salao.repository.AgendaRepository;
 import br.edu.ifms.salao.repository.ClienteRepository;
 import br.edu.ifms.salao.repository.ProfissionalRepository;
 import br.edu.ifms.salao.repository.PromocaoRepository;
@@ -34,6 +36,10 @@ public class DBService {
 	private ProfissionalRepository profissionalRepository;	
 	@Autowired
 	private ServicoRepository servicoRepository;
+	@Autowired
+	private AgendaRepository agendaRepository;
+	
+	
 	
 	public void instantiateTestDatabase() throws ParseException {
 		
@@ -46,12 +52,12 @@ public class DBService {
 
 		Cliente cli1 = new Cliente(null, "Maria Joaquina", "67 9 98987654", "m.joaquina@gmail.com", sa1);
 		Cliente cli2 = new Cliente(null, "Patricia", "67 9 98987654", "m.joaquina@gmail.com", sa1);
-		Cliente cli3 = new Cliente(null, "Ana", "67 9 98987654", "m.joaquina@gmail.com", sa1);
+		Cliente cli3 = new Cliente(null, "Debora Castro", "67 9 98987654", "m.joaquina@gmail.com", sa1);
 		Cliente cli4 = new Cliente(null, "Roosevelt Silva", "67 9 98987654", "m.joaquina@gmail.com", sa3);
 		Cliente cli5 = new Cliente(null, "Luis Freitas", "67 9 98987654", "m.joaquina@gmail.com", sa3);
 		Cliente cli6 = new Cliente(null, "Lucas Santos", "67 9 98987654", "m.joaquina@gmail.com", sa3);
 		Cliente cli7 = new Cliente(null, "Luis Jimenez", "67 9 98987654", "m.joaquina@gmail.com", sa2);
-		Cliente cli8 = new Cliente(null, "Jean Rojas", "67 9 98987654", "m.joaquina@gmail.com", sa2);
+		Cliente cli8 = new Cliente(null, "Roosevelt", "67 9 98987654", "m.joaquina@gmail.com", sa2);
 		Cliente cli9 = new Cliente(null, "Rafael Francozo", "67 9 98987654", "m.joaquina@gmail.com", sa2);
 		
 		Promocao pro1= new Promocao(null,"Promocao de escova japonesa", "alisamento", "10 dias", sa1);
@@ -66,8 +72,7 @@ public class DBService {
 		sa1.getPromocoes().addAll(Arrays.asList(pro1));
 		sa2.getPromocoes().addAll(Arrays.asList(pro3));
 		sa3.getPromocoes().addAll(Arrays.asList(pro2));
-		
-		
+				
 		
 		Profissional p1 = new Profissional(null, "Niva", "67 9 9878 5678");
 		Profissional p2 = new Profissional(null, "Suellen", "67 9 9878 5678");
@@ -92,8 +97,29 @@ public class DBService {
 		s6.getProfissionais().addAll(Arrays.asList(p1,p3));
 		
 		
+		Agenda a1 = new Agenda(null, "14/07/2022","15:00:00", cli3, s2);
+		Agenda a2 = new Agenda(null, "14/07/2022","16:00:00", cli3, s5);
+		Agenda a3 = new Agenda(null, "14/07/2022","18:00:00", cli3, s6);
+		
+		Agenda a4 = new Agenda(null, "15/07/2022","15:00:00", cli9, s1);
+		Agenda a5 = new Agenda(null, "15/07/2022","15:00:00", cli9, s3);
+		Agenda a6 = new Agenda(null, "15/07/2022","15:00:00", cli9, s4);
+		
+		Agenda a7 = new Agenda(null, "16/07/2022","08:00:00", cli5, s1);
+		
+		cli3.getAgendas().addAll(Arrays.asList(a1,a2,a3));
+		cli9.getAgendas().addAll(Arrays.asList(a4,a5,a6));
+		cli5.getAgendas().addAll(Arrays.asList(a7));
+		
+		s1.getAgendas().addAll(Arrays.asList(a4,a7));
+		s2.getAgendas().addAll(Arrays.asList(a1));
+		s3.getAgendas().addAll(Arrays.asList(a5));
+		s4.getAgendas().addAll(Arrays.asList(a6));
+		s5.getAgendas().addAll(Arrays.asList(a2));
+		s6.getAgendas().addAll(Arrays.asList(a3));
 		
 		
+				
 		user1.getSaloes().addAll(Arrays.asList(sa1,sa2,sa3));
 				
 		usuariosRepository.saveAll(Arrays.asList(user1));		
@@ -103,6 +129,7 @@ public class DBService {
 		
 		profissionalRepository.saveAll(Arrays.asList(p1,p2,p3));
 		servicoRepository.saveAll(Arrays.asList(s1,s2,s3,s4,s5,s6));
+		agendaRepository.saveAll(Arrays.asList(a1,a2,a3,a4,a5,a6,a7));
 		
 		
 	}
