@@ -9,39 +9,36 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
-import br.edu.ifms.salao.dto.SalaoDto;
-import br.edu.ifms.salao.model.Salao;
+import br.edu.ifms.salao.dto.ClienteDto;
+import br.edu.ifms.salao.model.Cliente;
 import br.edu.ifms.salao.repository.ClienteRepository;
-import br.edu.ifms.salao.repository.SalaoRepository;
 import br.edu.ifms.salao.service.exception.DataIntegrityException;
 import br.edu.ifms.salao.service.exception.ObjectNotFoundException;
 
 @Service
-public class SalaoService {
+public class ClienteService {
 	
 	@Autowired
-	private SalaoRepository repo;
-	@Autowired
-	private ClienteRepository cliente;
+	private ClienteRepository repo;
+	
 
 	
-	public Salao find(Integer id) {
-		Optional<Salao> obj = repo.findById(id); 
+	public Cliente find(Integer id) {
+		Optional<Cliente> obj = repo.findById(id); 
 		return obj.orElseThrow(() -> new ObjectNotFoundException( 
-				 "Objeto não encontrado! Id: " + id + ", Tipo: " + Salao.class.getName()));		
+				 "Objeto não encontrado! Id: " + id + ", Tipo: " + Cliente.class.getName()));		
 	}
 	
 	@Transactional
-	public Salao insert (Salao obj) {
+	public Cliente insert (Cliente obj) {
 		obj.setId(null);
-		repo.save(obj);
-		cliente.saveAll(obj.getClientes());
+		repo.save(obj);		
 		return obj;
 		
 	}
 	
-	public Salao update(Salao obj) {
-		Salao newObj = find(obj.getId());
+	public Cliente update(Cliente obj) {
+		Cliente newObj = find(obj.getId());
 		updateData(newObj, obj);
 		return repo.save(newObj);
 	}
@@ -57,21 +54,18 @@ public class SalaoService {
 		}
 	}
 
-	public List<Salao> findAll() {
+	public List<Cliente> findAll() {
 		// TODO Auto-generated method stub		
 		return repo.findAll();
 	}
 	
+	public Cliente fromDTO(ClienteDto objDto) {
+		return new Cliente(objDto.getId(), objDto.getNome(),objDto.getEmail(),objDto.getTelefone(),null);
+	}	
 	
-	public Salao fromDTO(SalaoDto objDto) {
-		return new Salao(objDto.getId(), objDto.getNome(),objDto.getCnpj(),objDto.getDescricao(), objDto.getTelefone(),null);
-	}
-
-	
-	private void updateData(Salao newObj, Salao obj) {
+	private void updateData(Cliente newObj, Cliente obj) {
 		newObj.setNome(obj.getNome());	
-		newObj.setCnpj(obj.getCnpj());	
-		newObj.setDescricao(obj.getDescricao());	
+		newObj.setEmail(obj.getEmail());	
 		newObj.setTelefone(obj.getTelefone());	
 	}
 

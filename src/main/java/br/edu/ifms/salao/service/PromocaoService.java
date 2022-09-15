@@ -9,39 +9,35 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
-import br.edu.ifms.salao.dto.SalaoDto;
-import br.edu.ifms.salao.model.Salao;
-import br.edu.ifms.salao.repository.ClienteRepository;
-import br.edu.ifms.salao.repository.SalaoRepository;
+import br.edu.ifms.salao.dto.PromocaoDto;
+import br.edu.ifms.salao.model.Promocao;
+import br.edu.ifms.salao.repository.PromocaoRepository;
 import br.edu.ifms.salao.service.exception.DataIntegrityException;
 import br.edu.ifms.salao.service.exception.ObjectNotFoundException;
 
 @Service
-public class SalaoService {
+public class PromocaoService {
 	
 	@Autowired
-	private SalaoRepository repo;
-	@Autowired
-	private ClienteRepository cliente;
-
+	private PromocaoRepository repo;
 	
-	public Salao find(Integer id) {
-		Optional<Salao> obj = repo.findById(id); 
+	
+	public Promocao find(Integer id) {
+		Optional<Promocao> obj = repo.findById(id); 
 		return obj.orElseThrow(() -> new ObjectNotFoundException( 
-				 "Objeto não encontrado! Id: " + id + ", Tipo: " + Salao.class.getName()));		
+				 "Objeto não encontrado! Id: " + id + ", Tipo: " + Promocao.class.getName()));		
 	}
 	
 	@Transactional
-	public Salao insert (Salao obj) {
+	public Promocao insert (Promocao obj) {
 		obj.setId(null);
 		repo.save(obj);
-		cliente.saveAll(obj.getClientes());
 		return obj;
 		
 	}
 	
-	public Salao update(Salao obj) {
-		Salao newObj = find(obj.getId());
+	public Promocao update(Promocao obj) {
+		Promocao newObj = find(obj.getId());
 		updateData(newObj, obj);
 		return repo.save(newObj);
 	}
@@ -57,22 +53,24 @@ public class SalaoService {
 		}
 	}
 
-	public List<Salao> findAll() {
+	public List<Promocao> findAll() {
 		// TODO Auto-generated method stub		
 		return repo.findAll();
 	}
 	
 	
-	public Salao fromDTO(SalaoDto objDto) {
-		return new Salao(objDto.getId(), objDto.getNome(),objDto.getCnpj(),objDto.getDescricao(), objDto.getTelefone(),null);
-	}
-
 	
-	private void updateData(Salao newObj, Salao obj) {
+	public Promocao fromDTO(PromocaoDto objDto) {
+		return new Promocao(objDto.getId(), objDto.getNome(),objDto.getDescricao(),objDto.getDataValidade(),null);
+	}
+	
+	
+	
+	private void updateData(Promocao newObj, Promocao obj) {
 		newObj.setNome(obj.getNome());	
-		newObj.setCnpj(obj.getCnpj());	
 		newObj.setDescricao(obj.getDescricao());	
-		newObj.setTelefone(obj.getTelefone());	
+		newObj.setDataValidade(obj.getDataValidade());	
+		
 	}
 
 }

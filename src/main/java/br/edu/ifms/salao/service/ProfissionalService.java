@@ -9,39 +9,36 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
-import br.edu.ifms.salao.dto.SalaoDto;
-import br.edu.ifms.salao.model.Salao;
-import br.edu.ifms.salao.repository.ClienteRepository;
-import br.edu.ifms.salao.repository.SalaoRepository;
+import br.edu.ifms.salao.dto.ProfissionalDto;
+import br.edu.ifms.salao.model.Profissional;
+import br.edu.ifms.salao.repository.ProfissionalRepository;
 import br.edu.ifms.salao.service.exception.DataIntegrityException;
 import br.edu.ifms.salao.service.exception.ObjectNotFoundException;
 
 @Service
-public class SalaoService {
+public class ProfissionalService {
 	
 	@Autowired
-	private SalaoRepository repo;
-	@Autowired
-	private ClienteRepository cliente;
-
+	private ProfissionalRepository repo;
 	
-	public Salao find(Integer id) {
-		Optional<Salao> obj = repo.findById(id); 
+	
+	public Profissional find(Integer id) {
+		Optional<Profissional> obj = repo.findById(id); 
 		return obj.orElseThrow(() -> new ObjectNotFoundException( 
-				 "Objeto não encontrado! Id: " + id + ", Tipo: " + Salao.class.getName()));		
+				 "Objeto não encontrado! Id: " + id + ", Tipo: " + Profissional.class.getName()));		
 	}
 	
 	@Transactional
-	public Salao insert (Salao obj) {
+	public Profissional insert (Profissional obj) {
 		obj.setId(null);
 		repo.save(obj);
-		cliente.saveAll(obj.getClientes());
+		
 		return obj;
 		
 	}
 	
-	public Salao update(Salao obj) {
-		Salao newObj = find(obj.getId());
+	public Profissional update(Profissional obj) {
+		Profissional newObj = find(obj.getId());
 		updateData(newObj, obj);
 		return repo.save(newObj);
 	}
@@ -57,22 +54,23 @@ public class SalaoService {
 		}
 	}
 
-	public List<Salao> findAll() {
+	public List<Profissional> findAll() {
 		// TODO Auto-generated method stub		
 		return repo.findAll();
 	}
 	
 	
-	public Salao fromDTO(SalaoDto objDto) {
-		return new Salao(objDto.getId(), objDto.getNome(),objDto.getCnpj(),objDto.getDescricao(), objDto.getTelefone(),null);
+	
+	public Profissional fromDTO(ProfissionalDto objDto) {
+		return new Profissional(objDto.getId(), objDto.getNome(),objDto.getTelefone());
 	}
+	
 
 	
-	private void updateData(Salao newObj, Salao obj) {
+	private void updateData(Profissional newObj, Profissional obj) {
 		newObj.setNome(obj.getNome());	
-		newObj.setCnpj(obj.getCnpj());	
-		newObj.setDescricao(obj.getDescricao());	
 		newObj.setTelefone(obj.getTelefone());	
+		
 	}
 
 }

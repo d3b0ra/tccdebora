@@ -15,9 +15,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 public class Agenda implements Serializable{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,10 +32,7 @@ public class Agenda implements Serializable{
 	private Servico servico;
 	
 	public Agenda() {
-		// TODO Auto-generated constructor stub
 	}
-
-
 
 	public Agenda(Integer id, String dataAgenda, String horaAgenda, Cliente cliente, Servico servico) {
 		super();
@@ -48,8 +42,6 @@ public class Agenda implements Serializable{
 		this.cliente = cliente;
 		this.servico = servico;
 	}
-
-
 
 	public Integer getId() {
 		return id;

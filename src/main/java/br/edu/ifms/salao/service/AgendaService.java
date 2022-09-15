@@ -9,39 +9,34 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
-import br.edu.ifms.salao.dto.SalaoDto;
-import br.edu.ifms.salao.model.Salao;
-import br.edu.ifms.salao.repository.ClienteRepository;
-import br.edu.ifms.salao.repository.SalaoRepository;
+import br.edu.ifms.salao.dto.AgendaDto;
+import br.edu.ifms.salao.model.Agenda;
+import br.edu.ifms.salao.repository.AgendaRepository;
 import br.edu.ifms.salao.service.exception.DataIntegrityException;
 import br.edu.ifms.salao.service.exception.ObjectNotFoundException;
 
 @Service
-public class SalaoService {
+public class AgendaService {
 	
 	@Autowired
-	private SalaoRepository repo;
-	@Autowired
-	private ClienteRepository cliente;
-
-	
-	public Salao find(Integer id) {
-		Optional<Salao> obj = repo.findById(id); 
+	private AgendaRepository repo;
+		
+	public Agenda find(Integer id) {
+		Optional<Agenda> obj = repo.findById(id); 
 		return obj.orElseThrow(() -> new ObjectNotFoundException( 
-				 "Objeto não encontrado! Id: " + id + ", Tipo: " + Salao.class.getName()));		
+				 "Objeto não encontrado! Id: " + id + ", Tipo: " + Agenda.class.getName()));		
 	}
 	
 	@Transactional
-	public Salao insert (Salao obj) {
+	public Agenda insert (Agenda obj) {
 		obj.setId(null);
 		repo.save(obj);
-		cliente.saveAll(obj.getClientes());
 		return obj;
 		
 	}
 	
-	public Salao update(Salao obj) {
-		Salao newObj = find(obj.getId());
+	public Agenda update(Agenda obj) {
+		Agenda newObj = find(obj.getId());
 		updateData(newObj, obj);
 		return repo.save(newObj);
 	}
@@ -57,22 +52,23 @@ public class SalaoService {
 		}
 	}
 
-	public List<Salao> findAll() {
+	public List<Agenda> findAll() {
 		// TODO Auto-generated method stub		
 		return repo.findAll();
 	}
 	
 	
-	public Salao fromDTO(SalaoDto objDto) {
-		return new Salao(objDto.getId(), objDto.getNome(),objDto.getCnpj(),objDto.getDescricao(), objDto.getTelefone(),null);
-	}
-
 	
-	private void updateData(Salao newObj, Salao obj) {
-		newObj.setNome(obj.getNome());	
-		newObj.setCnpj(obj.getCnpj());	
-		newObj.setDescricao(obj.getDescricao());	
-		newObj.setTelefone(obj.getTelefone());	
+	public Agenda fromDTO(AgendaDto objDto) {
+		return new Agenda(objDto.getId(), objDto.getDataAgenda(),objDto.getHoraAgenda(),null,null);
+	}
+	
+	
+	
+	private void updateData(Agenda newObj, Agenda obj) {
+		newObj.setDataAgenda(obj.getDataAgenda());	
+		newObj.setHoraAgenda(obj.getHoraAgenda());	
+			
 	}
 
 }

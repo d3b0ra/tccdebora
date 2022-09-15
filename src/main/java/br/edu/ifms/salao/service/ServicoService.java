@@ -9,39 +9,36 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
-import br.edu.ifms.salao.dto.SalaoDto;
-import br.edu.ifms.salao.model.Salao;
-import br.edu.ifms.salao.repository.ClienteRepository;
-import br.edu.ifms.salao.repository.SalaoRepository;
+import br.edu.ifms.salao.dto.ServicoDto;
+import br.edu.ifms.salao.model.Servico;
+import br.edu.ifms.salao.repository.ServicoRepository;
 import br.edu.ifms.salao.service.exception.DataIntegrityException;
 import br.edu.ifms.salao.service.exception.ObjectNotFoundException;
 
 @Service
-public class SalaoService {
+public class ServicoService {
 	
 	@Autowired
-	private SalaoRepository repo;
-	@Autowired
-	private ClienteRepository cliente;
+	private ServicoRepository repo;
+	
 
 	
-	public Salao find(Integer id) {
-		Optional<Salao> obj = repo.findById(id); 
+	public Servico find(Integer id) {
+		Optional<Servico> obj = repo.findById(id); 
 		return obj.orElseThrow(() -> new ObjectNotFoundException( 
-				 "Objeto não encontrado! Id: " + id + ", Tipo: " + Salao.class.getName()));		
+				 "Objeto não encontrado! Id: " + id + ", Tipo: " + Servico.class.getName()));		
 	}
 	
 	@Transactional
-	public Salao insert (Salao obj) {
+	public Servico insert (Servico obj) {
 		obj.setId(null);
 		repo.save(obj);
-		cliente.saveAll(obj.getClientes());
 		return obj;
 		
 	}
 	
-	public Salao update(Salao obj) {
-		Salao newObj = find(obj.getId());
+	public Servico update(Servico obj) {
+		Servico newObj = find(obj.getId());
 		updateData(newObj, obj);
 		return repo.save(newObj);
 	}
@@ -57,22 +54,24 @@ public class SalaoService {
 		}
 	}
 
-	public List<Salao> findAll() {
+	public List<Servico> findAll() {
 		// TODO Auto-generated method stub		
 		return repo.findAll();
 	}
 	
 	
-	public Salao fromDTO(SalaoDto objDto) {
-		return new Salao(objDto.getId(), objDto.getNome(),objDto.getCnpj(),objDto.getDescricao(), objDto.getTelefone(),null);
-	}
-
 	
-	private void updateData(Salao newObj, Salao obj) {
+	public Servico fromDTO(ServicoDto objDto) {
+		return new Servico(objDto.getId(), objDto.getNome(),objDto.getDescricao(), objDto.getValor(),objDto.getDuracao());
+	}
+	
+	
+	
+	private void updateData(Servico newObj, Servico obj) {
 		newObj.setNome(obj.getNome());	
-		newObj.setCnpj(obj.getCnpj());	
 		newObj.setDescricao(obj.getDescricao());	
-		newObj.setTelefone(obj.getTelefone());	
+		newObj.setValor(obj.getValor());	
+		newObj.setDuracao(obj.getDuracao());	
 	}
 
 }
